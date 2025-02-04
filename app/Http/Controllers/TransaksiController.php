@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\Transaksi;
@@ -10,8 +9,9 @@ class TransaksiController extends Controller
 {
     public function index()
     {
-        $transaksi = Transaksi::all();
-        return view('admin.transaksi.index', compact('transaksi'));
+       // Hanya ambil transaksi dengan jenis 'masuk'
+       $transaksi = Transaksi::where('jenis_transaksi', 'masuk')->get();
+       return view('admin.transaksi.index', compact('transaksi'));
     }
 
     public function create()
@@ -30,7 +30,7 @@ class TransaksiController extends Controller
         ]);
 
         Transaksi::create($request->all());
-        return redirect()->route('admin.transaksi.index')->with('success', 'Transaksi berhasil ditambahkan.');
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -51,13 +51,13 @@ class TransaksiController extends Controller
 
         $transaksi = Transaksi::find($id);
         $transaksi->update($request->all());
-        return redirect()->route('admin.transaksi.index')->with('success', 'Transaksi berhasil diperbarui.');
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui.');
     }
 
     public function destroy($id)
     {
         Transaksi::destroy($id);
-        return redirect()->route('admin.transaksi.index')->with('success', 'Transaksi berhasil dihapus.');
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus.');
     }
 }
 
