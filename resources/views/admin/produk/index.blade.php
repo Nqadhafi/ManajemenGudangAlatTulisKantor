@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
 
-                    <h3 class="card-title">Daftar Produk</h3>
+                    <h3 class="card-title">Daftar Master Produk</h3>
                     @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -26,7 +26,6 @@
                                 <th>#</th>
                                 <th>Nama Produk</th>
                                 <th>Kategori</th>
-                                <th>Stok</th>
                                 <th>Satuan</th>
                                 <th>Aksi</th>
                             </tr>
@@ -37,7 +36,6 @@
                                     <td>{{ $loop->iteration }}</td>
                                     <td>{{ $item->nama_produk }}</td>
                                     <td>{{ $item->kategori->nama_kategori }}</td>
-                                    <td>{{ $item->stok }}</td>
                                     <td>{{ $item->satuan }}</td>
                                     <td>
                                         <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>

@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
 
-                    <h3 class="card-title">Tambah Produk</h3>
+                    <h3 class="card-title">Tambah Master Produk</h3>
                 </div>
                 @if ($errors->any())
                 <div class="alert alert-danger">
@@ -33,10 +33,10 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group" hidden>
                             <label for="stok">Stok</label>
-                            <input type="number" class="form-control" id="stok" name="stok" required>
-                        </div>
+                            <input type="number" class="form-control" id="stok" name="stok">
+                        </div> --}}
                         <div class="form-group">
                             <label for="satuan">Satuan</label>
                             <input type="text" class="form-control" id="satuan" name="satuan" required>

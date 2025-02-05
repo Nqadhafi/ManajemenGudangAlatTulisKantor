@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">
                     
-                    <h3 class="card-title">Edit Produk</h3>
+                    <h3 class="card-title">Edit Master Produk</h3>
                 </div>
                 @if ($errors->any())
                 <div class="alert alert-danger">
@@ -35,10 +35,10 @@
                             </select>
                         </div>
                        
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="stok">Stok</label>
                             <input type="number" class="form-control" id="stok" name="stok" value="{{ $produk->stok }}" required>
-                        </div>
+                        </div> --}}
                         <div class="form-group">
                             <label for="satuan">Satuan</label>
                             <input type="text" class="form-control" id="satuan" name="satuan" value="{{ $produk->satuan }}" required>

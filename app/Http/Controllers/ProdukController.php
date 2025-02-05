@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Database\QueryException;
 use App\Models\Kategori;
 use App\Models\Produk;
 use Illuminate\Http\Request;
@@ -26,13 +26,17 @@ class ProdukController extends Controller
         $request->validate([
             'nama_produk' => 'required|unique:produk,nama_produk',
             'kategori_id' => 'required',
-            'stok' => 'required|numeric',
             'satuan' => 'required',
         ],[
             'nama_produk.unique' => 'Nama produk sudah ada. Mohon pilih nama lain.'  // Pesan kustom
         ]);
     
-        Produk::create($request->all());
+        Produk::create([
+            'nama_produk' => $request->nama_produk,
+            'kategori_id' => $request->kategori_id,
+            'satuan' => $request->satuan,
+            'stok' => 0,
+        ]);
         return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan.');
     }
     
@@ -48,7 +52,6 @@ class ProdukController extends Controller
         $request->validate([
             'nama_produk' => 'required|unique:produk,nama_produk',
             'kategori_id' => 'required',
-            'stok' => 'required|numeric',
             'satuan' => 'required',
         ], [
             'nama_produk.unique' => 'Masukan nama produk yang berbeda'  // Pesan kustom
@@ -61,8 +64,23 @@ class ProdukController extends Controller
     
     public function destroy($id)
     {
-        Produk::destroy($id);
-        return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus.');
+        try {
+            // Mencari produk berdasarkan id
+            $produk = Produk::findOrFail($id);
+            
+            // Menghapus produk
+            $produk->delete();
+            
+            return redirect()->route('produk.index')->with('success', 'Produk berhasil dihapus.');
+        } catch (QueryException $e) {
+            // Jika terjadi error constraint violation (kode error 23000)
+            if ($e->getCode() == 23000) {
+                return back()->withErrors(['error' => 'Produk ini masih memiliki transaksi terkait dan tidak dapat dihapus.']);
+            }
+    
+            // Menangani error lain yang mungkin terjadi
+            return back()->withErrors(['error' => 'Terjadi kesalahan saat menghapus produk.']);
+        }
     }
     
 }

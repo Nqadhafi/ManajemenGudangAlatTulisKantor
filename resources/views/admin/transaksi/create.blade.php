@@ -8,17 +8,30 @@
                 <div class="card-header">
                     <h3 class="card-title">Tambah Transaksi</h3>
                 </div>
+                @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
                 <div class="card-body">
                     <form action="{{ route('transaksi.store') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="produk_id">Produk</label>
-                            <select class="form-control" id="produk_id" name="produk_id" required>
-                                @foreach($produk as $item)
-                                    <option value="{{ $item->id }}">{{ $item->nama_produk }}</option>
+                            <select name="produk_id" id="produk_id" class="form-control">
+                                @foreach ($produk as $produk)
+                                    <option value="{{ $produk->id }}">
+                                        {{ $produk->nama_produk }} (Stok: {{ $produk->stok }})
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
+                        
                         <div class="form-group">
                             <label for="jenis_transaksi">Jenis Transaksi</label>
                             <select class="form-control" id="jenis_transaksi" name="jenis_transaksi" required>
