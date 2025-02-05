@@ -26,7 +26,7 @@
                             <select name="produk_id" id="produk_id" class="form-control">
                                 @foreach ($produk as $produk)
                                     <option value="{{ $produk->id }}">
-                                        {{ $produk->nama_produk }} (Stok: {{ $produk->stok }})
+                                        {{ $produk->nama_produk }} [Stok: {{ $produk->stok }} {{ $produk->satuan }}]
                                     </option>
                                 @endforeach
                             </select>

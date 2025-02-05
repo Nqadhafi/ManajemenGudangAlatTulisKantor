@@ -18,6 +18,7 @@
                                 <th>Produk</th>
                                 <th>Jenis Transaksi</th>
                                 <th>Jumlah</th>
+                                <th>Satuan</th>
                                 <th>Tanggal</th>
                                 <th>Aksi</th>
                             </tr>
@@ -29,6 +30,7 @@
                                     <td>{{ $item->produk->nama_produk }}</td>
                                     <td>{{ ucfirst($item->jenis_transaksi) }}</td>
                                     <td>{{ $item->jumlah }}</td>
+                                    <td>{{ $item->produk->satuan }}</td>
                                     <td>{{ $item->tanggal_transaksi }}</td>
                                     <td>
                                         <a href="{{ route('transaksi.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
