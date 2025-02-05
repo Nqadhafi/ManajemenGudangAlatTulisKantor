@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\DivisiController;
 use App\Http\Controllers\KaryawanController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
@@ -37,7 +38,10 @@ Route::resource('/admin/karyawan', KaryawanController::class);
 
 // Divisi
 Route::resource('/admin/divisi', DivisiController::class);
-// Divisi
+
+// Transaksi
 Route::resource('/admin/transaksi', TransaksiController::class);
 
+// Perusahaan
+Route::resource('/admin/perusahaan', PerusahaanController::class);
 

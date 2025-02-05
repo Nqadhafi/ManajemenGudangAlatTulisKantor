@@ -7,11 +7,19 @@
     </ul>
 </nav>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
-    <a href="{{ route('admin.dashboard') }}" class="brand-link">
+  <a href="{{ route('admin.dashboard') }}" class="brand-link">
+    <!-- Menampilkan Logo Perusahaan jika ada -->
+    @if($perusahaan && $perusahaan->logo)
+        <img src="{{ asset('storage/' . $perusahaan->logo) }}" alt="Logo Perusahaan" class="brand-image img-circle elevation-3" style="opacity: .8">
+    @else
         <img src="{{ asset('adminlte/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">Admin Dashboard</span>
-    </a>
-
+    @endif
+    
+    <span class="brand-text font-weight-light">
+        <!-- Menampilkan Nama Perusahaan -->
+        {{ $perusahaan ? $perusahaan->nama : 'Admin Dashboard' }}
+    </span>
+</a>
     <div class="sidebar">
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -20,6 +28,12 @@
                     <a href="{{ route('admin.dashboard') }}" class="nav-link">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('perusahaan.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p>Master Perusahaan</p>
                     </a>
                 </li>
                 <!-- Transaksi -->
