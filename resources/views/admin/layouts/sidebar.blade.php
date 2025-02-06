@@ -5,6 +5,32 @@
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
     </ul>
+    <ul class="navbar-nav ml-auto">
+  
+      <!-- Dropdown Logout -->
+      <li class="nav-item dropdown">
+          <a class="nav-link" data-toggle="dropdown" href="#">
+            <i class="nav-icon fas fa-user"></i> 
+            Halo, {{ auth()->user()->name }} <!-- Menampilkan nama pengguna yang sedang login -->
+              <i class="fas fa-angle-down ml-2"></i> <!-- Ikon untuk dropdown -->
+        
+          </a>
+          <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+              <!-- Opsi Logout -->
+              <a href="#" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                  <i class="fas fa-sign-out-alt mr-2"></i> Logout
+              </a>
+              <!-- Tambahkan opsi lain jika diperlukan -->
+          </div>
+      </li>
+  
+      <!-- Form Logout -->
+      <form action="{{ route('logout') }}" method="POST" id="logout-form" style="display: none;">
+          @csrf
+      </form>
+  </ul>
+  
+  
 </nav>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
   <a href="{{ route('admin.dashboard') }}" class="brand-link">

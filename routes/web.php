@@ -8,7 +8,8 @@ use App\Http\Controllers\PerusahaanController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Auth\LoginController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,23 +26,26 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 
-// Kategori
-Route::resource('/admin/kategori', KategoriController::class);
 
-// Produk
-Route::resource('/admin/produk', ProdukController::class);
+Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    // Tambahkan route lainnya yang hanya bisa diakses oleh admin
+    Route::resource('kategori', KategoriController::class);
+    Route::resource('produk', ProdukController::class);
+    Route::resource('karyawan', KaryawanController::class);
+    Route::resource('divisi', DivisiController::class);
+    Route::resource('transaksi', TransaksiController::class);
+    Route::resource('perusahaan', PerusahaanController::class);
+});
 
-// Karyawan
-Route::resource('/admin/karyawan', KaryawanController::class);
 
-// Divisi
-Route::resource('/admin/divisi', DivisiController::class);
 
-// Transaksi
-Route::resource('/admin/transaksi', TransaksiController::class);
 
-// Perusahaan
-Route::resource('/admin/perusahaan', PerusahaanController::class);
 
+Route::get('login', function () {
+    return view('auth.login');
+})->name('login');
+
+Route::post('login', [LoginController::class, 'login'])->name('login.post');
+Route::post('logout', [LoginController::class, 'logout'])->name('logout');
