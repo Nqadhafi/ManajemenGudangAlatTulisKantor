@@ -7,6 +7,14 @@
             <div class="card">
                 <div class="card-header">
                     <h3 class="card-title">Daftar Transaksi Masuk</h3>
+                    <form method="GET">
+                        <select name="jenis" onchange="this.form.submit()">
+                            <option value="">Semua Transaksi</option>
+                            <option value="masuk">Masuk</option>
+                            <option value="keluar">Keluar</option>
+                        </select>
+                    </form>
+                    
                     <!-- Button tambah transaksi masuk (untuk admin) -->
                     <a href="{{ route('transaksi.create') }}" class="btn btn-primary float-right">Tambah Transaksi Masuk</a>
                 </div>

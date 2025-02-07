@@ -7,12 +7,19 @@ use Illuminate\Http\Request;
 
 class TransaksiController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-       // Hanya ambil transaksi dengan jenis 'masuk'
-       $transaksi = Transaksi::where('jenis_transaksi', 'masuk')->get();
-       return view('admin.transaksi.index', compact('transaksi'));
+        $jenis = $request->query('jenis'); // Ambil query parameter 'jenis'
+        
+        if ($jenis) {
+            $transaksi = Transaksi::where('jenis_transaksi', $jenis)->get();
+        } else {
+            $transaksi = Transaksi::all();
+        }
+    
+        return view('admin.transaksi.index', compact('transaksi'));
     }
+    
 
     public function create()
     {
@@ -69,19 +76,57 @@ class TransaksiController extends Controller
         $request->validate([
             'produk_id' => 'required',
             'jenis_transaksi' => 'required|in:masuk,keluar',
-            'jumlah' => 'required|numeric',
+            'jumlah' => 'required|numeric|min:1',
             'tanggal_transaksi' => 'required|date',
         ]);
-
-        $transaksi = Transaksi::find($id);
+    
+        $transaksi = Transaksi::findOrFail($id);
+        $produk = Produk::findOrFail($transaksi->produk_id);
+    
+        // Mengembalikan stok ke kondisi sebelum transaksi diperbarui
+        if ($transaksi->jenis_transaksi == 'masuk') {
+            $produk->stok -= $transaksi->jumlah;
+        } else {
+            $produk->stok += $transaksi->jumlah;
+        }
+    
+        // Validasi stok jika transaksi keluar
+        if ($request->jenis_transaksi == 'keluar' && $produk->stok < $request->jumlah) {
+            return back()->withErrors(['error' => 'Stok tidak cukup untuk transaksi keluar.']);
+        }
+    
+        // Perbarui stok berdasarkan transaksi yang baru
+        if ($request->jenis_transaksi == 'masuk') {
+            $produk->stok += $request->jumlah;
+        } else {
+            $produk->stok -= $request->jumlah;
+        }
+    
+        $produk->save();
+    
+        // Update transaksi
         $transaksi->update($request->all());
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diperbarui.');
     }
+    
 
     public function destroy($id)
     {
-        Transaksi::destroy($id);
-        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus.');
+        $transaksi = Transaksi::findOrFail($id);
+        $produk = Produk::findOrFail($transaksi->produk_id);
+    
+        // Kembalikan stok sebelum transaksi dihapus
+        if ($transaksi->jenis_transaksi == 'masuk') {
+            $produk->stok -= $transaksi->jumlah;
+        } else {
+            $produk->stok += $transaksi->jumlah;
+        }
+    
+        $produk->save();
+        $transaksi->delete();
+    
+        return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus dan stok diperbarui.');
     }
+    
 }
 
