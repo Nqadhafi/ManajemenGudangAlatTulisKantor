@@ -49,3 +49,17 @@ Route::get('login', function () {
 
 Route::post('login', [LoginController::class, 'login'])->name('login.post');
 Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+use App\Http\Controllers\UserLoginController;
+use App\Http\Controllers\UserTransaksiController;
+
+// Route untuk login user
+Route::get('/', [UserLoginController::class, 'index'])->name('home');  // Halaman login user
+Route::post('/user/login', [UserLoginController::class, 'login'])->name('user.login.submit');  // Proses login user
+
+// Route untuk transaksi user setelah login
+Route::get('/pengambilan', [UserTransaksiController::class, 'index'])->name('pengambilan.index');
+Route::post('/pengambilan', [UserTransaksiController::class, 'store'])->name('pengambilan.store');
+
+// Route untuk logout user
+Route::post('/user/logout', [UserLoginController::class, 'logout'])->name('user.logout');
