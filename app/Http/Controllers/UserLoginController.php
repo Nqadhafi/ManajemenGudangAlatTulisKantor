@@ -11,7 +11,14 @@ class UserLoginController extends Controller
     // Menampilkan halaman login user
     public function index()
     {
-        return view('login');  // Tampilkan view login
+        // Cek jika session NIK sudah ada, berarti sudah login
+        if (session()->has('nik')) {
+            // Redirect ke halaman transaksi jika sudah login
+            return redirect()->route('pengambilan.index');
+        }
+
+        // Tampilkan halaman login jika belum login
+        return view('login');
     }
 
     // Proses login user
