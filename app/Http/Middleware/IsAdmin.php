@@ -18,7 +18,7 @@ class IsAdmin
     {
         if (auth()->check() && auth()->user()->role !== 'admin') {
             // Jika bukan admin, redirect ke halaman utama atau login
-            return redirect('/');
+            return redirect('/login');
         }
 
         return $next($request); // Lanjutkan ke route jika admin
