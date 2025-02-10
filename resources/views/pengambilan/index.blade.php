@@ -23,7 +23,12 @@
                 {{ session('success') }}
             </div>
         @endif
-
+ <!-- Tampilkan pesan error -->
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
         <!-- Form transaksi -->
         <form method="POST" action="{{ route('pengambilan.store') }}">
             @csrf
