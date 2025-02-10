@@ -18,7 +18,7 @@ class CheckUserLoggedIn
     {
         // Cek jika session NIK tidak ada
         if (!session()->has('nik')) {
-            return redirect()->route('home'); // Kembali ke halaman login
+            return redirect()->route('/'); // Kembali ke halaman login
         }
 
         return $next($request);
