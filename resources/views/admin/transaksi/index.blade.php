@@ -23,10 +23,11 @@
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Nama Pengambil</th>
                                 <th>Produk</th>
                                 <th>Jenis Transaksi</th>
                                 <th>Jumlah</th>
-                                <th>Satuan</th>
+                                <th>Keterangan</th>
                                 <th>Tanggal</th>
                                 <th>Aksi</th>
                             </tr>
@@ -35,10 +36,18 @@
                             @foreach ($transaksi as $item)
                                 <tr>
                                     <td>{{ $loop->iteration }}</td>
+                                    <td>
+                                        @if ($item->karyawan)
+                                            {{ $item->karyawan->nama }}
+                                        @else
+                                            Admin
+                                        @endif
+                                    </td>
+                                    
                                     <td>{{ $item->produk->nama_produk }}</td>
                                     <td>{{ ucfirst($item->jenis_transaksi) }}</td>
-                                    <td>{{ $item->jumlah }}</td>
-                                    <td>{{ $item->produk->satuan }}</td>
+                                    <td>{{ $item->jumlah }} {{ $item->produk->satuan }}</td>
+                                    <td>{{ $item->keterangan }}</td>
                                     <td>{{ $item->tanggal_transaksi }}</td>
                                     <td>
                                         <a href="{{ route('transaksi.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>

@@ -17,4 +17,9 @@ class Transaksi extends Model
     {
         return $this->belongsTo(Produk::class);
     }
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'nik_karyawan', 'nik');
+    }
+    
 }
