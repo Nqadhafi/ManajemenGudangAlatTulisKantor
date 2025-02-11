@@ -22,6 +22,16 @@ class UserTransaksiController extends Controller
         return view('pengambilan.index', compact('produk', 'karyawan'));
     }
 
+public function history()
+{
+    // Ambil data transaksi berdasarkan nik_karyawan yang login
+    $transaksi = Transaksi::where('nik_karyawan', session('nik'))
+        ->orderBy('tanggal_transaksi', 'desc') // Urutkan berdasarkan tanggal terbaru
+        ->get();
+
+    return view('pengambilan.history', compact('transaksi'));
+}
+
     public function store(Request $request)
     {
         $request->validate([

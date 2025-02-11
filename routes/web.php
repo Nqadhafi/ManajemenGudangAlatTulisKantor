@@ -59,7 +59,9 @@ Route::post('/user/login', [UserLoginController::class, 'login'])->name('user.lo
 Route::middleware(['check.logged.in'])->group(function () {
     Route::get('/pengambilan', [UserTransaksiController::class, 'index'])->name('pengambilan.index');
     Route::post('/pengambilan', [UserTransaksiController::class, 'store'])->name('pengambilan.store');
+    Route::get('/history', [UserTransaksiController::class, 'history'])->name('pengambilan.history');
 });
+
 
 // Route untuk logout user
 Route::post('/user/logout', [UserLoginController::class, 'logout'])->name('user.logout');

@@ -16,6 +16,8 @@
             <strong>Nama Karyawan:</strong> {{ $karyawan->nama }} <br>
             <strong>NIK:</strong> {{ $karyawan->nik }}
         </div>
+  <!-- Link menuju history transaksi -->
+  <a href="{{ route('pengambilan.history') }}" class="btn btn-info mt-3">Lihat History Transaksi</a>
 
         <!-- Tampilkan pesan error -->
         @if (session('error'))
