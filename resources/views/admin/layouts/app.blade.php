@@ -15,6 +15,12 @@
  @include('admin.layouts.sidebar')
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+            @if (session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+@endif
+
             <div class="container d-flex pt-5">
             @yield('content')
         </div>
