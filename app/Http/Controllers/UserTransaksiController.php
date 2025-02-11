@@ -22,14 +22,17 @@ class UserTransaksiController extends Controller
         return view('pengambilan.index', compact('produk', 'karyawan'));
     }
 
-    // Proses penyimpanan transaksi
     public function store(Request $request)
     {
         $request->validate([
             'produk_id' => 'required|array',
             'jumlah' => 'required|array',
-            'jumlah.*' => 'numeric|min:1', // Pastikan jumlah produk adalah angka dan lebih besar dari 0
+            'jumlah.*' => 'numeric|min:1',
+            'keterangan' => 'required|array',
+            'keterangan.*' => 'string|max:255',
         ]);
+    
+        $transaksiDetail = [];
     
         foreach ($request->produk_id as $index => $produkId) {
             $produk = Produk::find($produkId);
@@ -39,13 +42,21 @@ class UserTransaksiController extends Controller
                 return redirect()->back()->with('error', 'Stok produk tidak mencukupi!');
             }
     
+            // Tambahkan detail transaksi untuk ditampilkan di modal konfirmasi
+            $transaksiDetail[] = [
+                'nama' => $produk->nama_produk,
+                'jumlah' => $request->jumlah[$index],
+                'keterangan' => $request->keterangan[$index],
+            ];
+    
             // Jika stok cukup, buat transaksi
             Transaksi::create([
-                'jenis_transaksi' => 'keluar', // Tipe transaksi keluar
+                'jenis_transaksi' => 'keluar',
                 'produk_id' => $produkId,
                 'jumlah' => $request->jumlah[$index],
                 'tanggal_transaksi' => now(),
                 'nik_karyawan' => session('nik'),
+                'keterangan' => $request->keterangan[$index],
             ]);
     
             // Kurangi stok produk
@@ -53,7 +64,13 @@ class UserTransaksiController extends Controller
             $produk->save();
         }
     
-        return redirect()->route('pengambilan.index')->with('success', 'Transaksi berhasil!');
+        // Kirim detail transaksi ke view untuk ditampilkan di modal
+        return redirect()->route('pengambilan.index')->with([
+            'success' => 'Transaksi berhasil!',
+            'transaksiDetail' => $transaksiDetail, // Kirim detail transaksi
+        ]);
     }
+    
+    
 }
 
