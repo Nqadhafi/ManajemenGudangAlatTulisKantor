@@ -1,20 +1,22 @@
 <div>
     <!-- Form Filter -->
     <div class="d-flex mb-3">
+        <!-- Filter Produk -->
+        <!-- Pencarian Transaksi -->
         <div class="form-group mr-3">
-            <select wire:model="produkId" class="form-control">
-                <option value="">Semua Produk</option>
-                @foreach($produk as $item)
-                    <option value="{{ $item->id }}">{{ $item->nama_produk }}</option>
-                @endforeach
-            </select>
+            <input wire:model="search" type="text" class="form-control" placeholder="Cari berdasarkan produk atau keterangan">
         </div>
+
         
+        <!-- Filter Tanggal -->
         <div class="form-group mr-3">
             <input wire:model="tanggal" type="date" class="form-control">
         </div>
 
-        <button wire:click="$refresh" class="btn btn-secondary">Clear Filter</button>
+
+        <!-- Tombol Clear Filter -->
+        <button wire:click="resetFilters" class="btn btn-secondary">Clear Filter</button>
+
     </div>
 
     <!-- Tabel Transaksi -->
@@ -61,4 +63,7 @@
     <div class="d-flex mt-1 justify-content-start">
         {{ $transaksi->links('pagination::simple-bootstrap-4') }}
     </div>
+
 </div>
+
+

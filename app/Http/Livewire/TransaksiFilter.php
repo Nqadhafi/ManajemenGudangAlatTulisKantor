@@ -13,15 +13,25 @@ class TransaksiFilter extends Component
 
     public $produkId;
     public $tanggal;
+    public $search; // Properti untuk pencarian
 
-    protected $queryString = ['produkId', 'tanggal'];
-
+    protected $queryString = ['produkId', 'tanggal', 'search'];
+    public function resetFilters()
+    {
+        $this->produkId = null;
+        $this->tanggal = null;
+        $this->search = '';
+    }
+    
     // Fungsi untuk mendapatkan transaksi berdasarkan filter
     public function render()
     {
         $transaksi = Transaksi::query()
-            ->when($this->produkId, function ($query) {
-                return $query->where('produk_id', $this->produkId);
+            ->when($this->search, function ($query) {
+                return $query->whereHas('produk', function ($query) {
+                    $query->where('nama_produk', 'like', '%' . $this->search . '%');
+                })
+                ->orWhere('keterangan', 'like', '%' . $this->search . '%');
             })
             ->when($this->tanggal, function ($query) {
                 return $query->whereDate('tanggal_transaksi', $this->tanggal);
