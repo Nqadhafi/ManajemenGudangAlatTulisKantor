@@ -10,14 +10,14 @@ class TransaksiController extends Controller
     // Menampilkan transaksi masuk
     public function masuk(Request $request)
     {
-        $transaksi = Transaksi::where('jenis_transaksi', 'masuk')->get();
+        $transaksi = Transaksi::where('jenis_transaksi', 'masuk')->paginate(10);
         return view('admin.transaksi.index', compact('transaksi'));
     }
 
     // Menampilkan transaksi keluar
     public function keluar(Request $request)
     {
-        $transaksi = Transaksi::where('jenis_transaksi', 'keluar')->get();
+        $transaksi = Transaksi::where('jenis_transaksi', 'keluar')->paginate(10);
         return view('admin.transaksi.index', compact('transaksi'));
     }
 

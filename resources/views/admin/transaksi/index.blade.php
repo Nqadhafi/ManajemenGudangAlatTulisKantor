@@ -36,7 +36,7 @@
                         <tbody>
                             @foreach ($transaksi as $item)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $transaksi->perPage() * ($transaksi->currentPage() - 1) + $loop->iteration }}</td>
                                     <td>
                                         @if ($item->karyawan)
                                             {{ $item->karyawan->nama }}
@@ -64,6 +64,10 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="d-flex mt-1 justify-content-start">
+                        {{ $transaksi->appends(['jenis_transaksi' => request()->routeIs('transaksi.masuk') ? 'masuk' : 'keluar'])->links('pagination::simple-bootstrap-4') }}
+                    </div>
+                    
                 </div>
             </div>
         </div>
