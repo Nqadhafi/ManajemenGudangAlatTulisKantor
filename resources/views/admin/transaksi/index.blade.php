@@ -6,17 +6,18 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Daftar Transaksi Masuk</h3>
-                    <form method="GET">
-                        <select name="jenis" onchange="this.form.submit()">
-                            <option value="">Semua Transaksi</option>
-                            <option value="masuk">Masuk</option>
-                            <option value="keluar">Keluar</option>
-                        </select>
-                    </form>
+                    <h3 class="card-title">Daftar Transaksi 
+                        @if(request()->routeIs('transaksi.masuk')) 
+                            Masuk 
+                        @elseif(request()->routeIs('transaksi.keluar')) 
+                            Keluar 
+                        @endif
+                    </h3>
                     
-                    <!-- Button tambah transaksi masuk (untuk admin) -->
-                    <a href="{{ route('transaksi.create') }}" class="btn btn-primary float-right">Tambah Transaksi Masuk</a>
+                    <!-- Tombol untuk menambah transaksi dengan jenis transaksi yang sesuai -->
+                    <a href="{{ route('transaksi.create', ['jenis_transaksi' => request()->routeIs('transaksi.masuk') ? 'masuk' : 'keluar']) }}" class="btn btn-primary float-right">Tambah Transaksi</a>
+
+
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -43,14 +44,16 @@
                                             Admin
                                         @endif
                                     </td>
-                                    
                                     <td>{{ $item->produk->nama_produk }}</td>
                                     <td>{{ ucfirst($item->jenis_transaksi) }}</td>
                                     <td>{{ $item->jumlah }} {{ $item->produk->satuan }}</td>
                                     <td>{{ $item->keterangan }}</td>
                                     <td>{{ $item->tanggal_transaksi }}</td>
                                     <td>
-                                        <a href="{{ route('transaksi.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                                        <!-- Tombol Edit -->
+                                        <a href="{{ route('transaksi.edit', ['jenis_transaksi' => $item->jenis_transaksi, 'transaksi' => $item->id]) }}" class="btn btn-warning btn-sm">Edit</a>
+                                        
+                                        <!-- Form untuk menghapus transaksi -->
                                         <form action="{{ route('transaksi.destroy', $item->id) }}" method="POST" style="display:inline;">
                                             @csrf
                                             @method('DELETE')

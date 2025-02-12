@@ -70,13 +70,21 @@
                         <p>Transaksi</p>
                     </a>
                     <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                          <a href="{{ route('transaksi.index') }}" class="nav-link">
-                            <i class="far fa-circle nav-icon"></i>
-                            <p>Transaksi Barang</p>
+                      <!-- Transaksi Masuk -->
+                      <li class="nav-item">
+                          <a href="{{ route('transaksi.masuk') }}" class="nav-link">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Transaksi Masuk</p>
                           </a>
-                        </li>
-                      </ul>
+                      </li>
+                      <!-- Transaksi Keluar -->
+                      <li class="nav-item">
+                          <a href="{{ route('transaksi.keluar') }}" class="nav-link">
+                              <i class="far fa-circle nav-icon"></i>
+                              <p>Transaksi Keluar</p>
+                          </a>
+                      </li>
+                  </ul>
                 </li>
 
                 <!-- Data Karyawan -->

@@ -34,8 +34,25 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::resource('produk', ProdukController::class);
     Route::resource('karyawan', KaryawanController::class);
     Route::resource('divisi', DivisiController::class);
-    Route::resource('transaksi', TransaksiController::class);
     Route::resource('perusahaan', PerusahaanController::class);
+// Transaksi Masuk & Keluar
+Route::get('/transaksi/masuk', [TransaksiController::class, 'masuk'])->name('transaksi.masuk');
+Route::get('/transaksi/keluar', [TransaksiController::class, 'keluar'])->name('transaksi.keluar');
+
+// Route untuk create dengan jenis transaksi
+Route::get('/transaksi/{jenis_transaksi}/create', [TransaksiController::class, 'create'])->name('transaksi.create');
+
+// Route untuk store transaksi
+Route::post('/transaksi/store', [TransaksiController::class, 'store'])->name('transaksi.store');
+
+// Route untuk edit transaksi dengan jenis transaksi
+Route::get('/transaksi/{jenis_transaksi}/{transaksi}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
+
+// Route untuk update transaksi
+Route::put('/transaksi/{transaksi}', [TransaksiController::class, 'update'])->name('transaksi.update');
+
+// Route untuk delete transaksi
+Route::delete('/transaksi/{transaksi}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
 });
 
 
