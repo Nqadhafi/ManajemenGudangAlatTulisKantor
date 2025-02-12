@@ -13,11 +13,25 @@
                             Keluar 
                         @endif
                     </h3>
-                    
+
+                    <!-- Form Filter -->
+                    <form method="GET" action="{{ request()->url() }}" class="form-inline float-right">
+                        <div class="form-group">
+                            <select name="produk_id" class="form-control mr-2">
+                                <option value="">Semua Produk</option>
+                                @foreach($produk as $item)
+                                    <option value="{{ $item->id }}" @if(request('produk_id') == $item->id) selected @endif>{{ $item->nama_produk }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input type="date" name="tanggal" class="form-control mr-2" value="{{ request('tanggal') }}">
+                        </div>
+                        <button type="submit" class="btn btn-secondary">Filter</button>
+                    </form>
+
                     <!-- Tombol untuk menambah transaksi dengan jenis transaksi yang sesuai -->
-                    <a href="{{ route('transaksi.create', ['jenis_transaksi' => request()->routeIs('transaksi.masuk') ? 'masuk' : 'keluar']) }}" class="btn btn-primary float-right">Tambah Transaksi</a>
-
-
+                    <a href="{{ route('transaksi.create', ['jenis_transaksi' => request()->routeIs('transaksi.masuk') ? 'masuk' : 'keluar']) }}" class="btn btn-primary float-right ml-2">Tambah Transaksi</a>
                 </div>
                 <div class="card-body">
                     <table class="table table-bordered">
@@ -36,7 +50,7 @@
                         <tbody>
                             @foreach ($transaksi as $item)
                                 <tr>
-                                    <td>{{ $transaksi->perPage() * ($transaksi->currentPage() - 1) + $loop->iteration }}</td>
+                                    <td>{{ $loop->iteration + ($transaksi->currentPage() - 1) * $transaksi->perPage() }}</td>
                                     <td>
                                         @if ($item->karyawan)
                                             {{ $item->karyawan->nama }}
@@ -64,10 +78,11 @@
                             @endforeach
                         </tbody>
                     </table>
+
+                    <!-- Pagination -->
                     <div class="d-flex mt-1 justify-content-start">
-                        {{ $transaksi->appends(['jenis_transaksi' => request()->routeIs('transaksi.masuk') ? 'masuk' : 'keluar'])->links('pagination::simple-bootstrap-4') }}
+                        {{ $transaksi->links('pagination::simple-bootstrap-4') }}
                     </div>
-                    
                 </div>
             </div>
         </div>

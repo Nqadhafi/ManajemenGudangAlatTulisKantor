@@ -10,16 +10,50 @@ class TransaksiController extends Controller
     // Menampilkan transaksi masuk
     public function masuk(Request $request)
     {
-        $transaksi = Transaksi::where('jenis_transaksi', 'masuk')->paginate(10);
-        return view('admin.transaksi.index', compact('transaksi'));
+        // Ambil parameter filter dari request
+        $produkId = $request->get('produk_id');
+        $tanggal = $request->get('tanggal');
+        
+        // Query transaksi masuk dengan filter
+        $transaksi = Transaksi::where('jenis_transaksi', 'masuk')
+            ->when($produkId, function($query) use ($produkId) {
+                return $query->where('produk_id', $produkId);
+            })
+            ->when($tanggal, function($query) use ($tanggal) {
+                return $query->whereDate('tanggal_transaksi', $tanggal);
+            })
+            ->orderBy('tanggal_transaksi', 'desc') // Urutkan berdasarkan tanggal terbaru
+            ->paginate(10);
+    
+        // Ambil data produk untuk dropdown filter
+        $produk = Produk::all();
+        
+        return view('admin.transaksi.index', compact('transaksi', 'produk'));
     }
-
-    // Menampilkan transaksi keluar
+    
     public function keluar(Request $request)
     {
-        $transaksi = Transaksi::where('jenis_transaksi', 'keluar')->paginate(10);
-        return view('admin.transaksi.index', compact('transaksi'));
+        // Ambil parameter filter dari request
+        $produkId = $request->get('produk_id');
+        $tanggal = $request->get('tanggal');
+    
+        // Query transaksi keluar dengan filter
+        $transaksi = Transaksi::where('jenis_transaksi', 'keluar')
+            ->when($produkId, function($query) use ($produkId) {
+                return $query->where('produk_id', $produkId);
+            })
+            ->when($tanggal, function($query) use ($tanggal) {
+                return $query->whereDate('tanggal_transaksi', $tanggal);
+            })
+            ->orderBy('tanggal_transaksi', 'desc') // Urutkan berdasarkan tanggal terbaru
+            ->paginate(10);
+    
+        // Ambil data produk untuk dropdown filter
+        $produk = Produk::all();
+    
+        return view('admin.transaksi.index', compact('transaksi', 'produk'));
     }
+    
 
     // Index - Menampilkan semua transaksi atau transaksi berdasarkan jenis
     public function index(Request $request)
