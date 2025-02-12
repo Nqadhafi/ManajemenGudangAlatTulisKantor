@@ -33,7 +33,7 @@
                         <tbody>
                             @foreach ($produk as $item)
                                 <tr>
-                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $loop->iteration + ($produk->currentPage() - 1) * $produk->perPage() }}</td>
                                     <td>{{ $item->nama_produk }}</td>
                                     <td>{{ $item->kategori->nama_kategori }}</td>
                                     <td>{{ $item->satuan }}</td>
@@ -49,6 +49,10 @@
                             @endforeach
                         </tbody>
                     </table>
+                        <!-- Pagination -->
+    <div class="d-flex mt-1 justify-content-start">
+        {{ $produk->links('pagination::simple-bootstrap-4') }}
+    </div>
                 </div>
             </div>
         </div>
