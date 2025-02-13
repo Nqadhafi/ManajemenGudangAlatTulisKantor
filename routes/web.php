@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Auth;
 
 
 Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
-    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     // Tambahkan route lainnya yang hanya bisa diakses oleh admin
     Route::resource('kategori', KategoriController::class);
     Route::resource('produk', ProdukController::class);
