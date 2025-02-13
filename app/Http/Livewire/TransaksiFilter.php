@@ -25,7 +25,7 @@ class TransaksiFilter extends Component
         $this->produkId = null;
         $this->tanggal = null;
         $this->search = '';
-        $this->jenis_transaksi = null; // Reset filter jenis transaksi
+        // $this->jenis_transaksi = null; // Reset filter jenis transaksi
     }
 
     // Fungsi yang dijalankan ketika komponen pertama kali dimuat
