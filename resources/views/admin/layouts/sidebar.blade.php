@@ -132,6 +132,27 @@
                         </li>
                       </ul>
                 </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-angle-left right"></i>
+                        <i class="nav-icon fas fa-tags"></i>
+                        <p>Laporan</p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                          <a href="{{ route('laporan.stok') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Laporan Stok</p>
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a href="{{ route('laporan.transaksi') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Laporan Transaksi</p>
+                          </a>
+                        </li>
+                      </ul>
+                </li>
 
 
 
