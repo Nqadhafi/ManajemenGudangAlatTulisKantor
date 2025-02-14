@@ -11,6 +11,7 @@ use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\StockReportController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -36,8 +37,8 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::resource('karyawan', KaryawanController::class);
     Route::resource('divisi', DivisiController::class);
     Route::resource('perusahaan', PerusahaanController::class);
-    Route::get('/laporan/stok', [LaporanController::class, 'stok'])->name('laporan.stok');
-    Route::get('/laporan/transaksi', [LaporanController::class, 'transaksi'])->name('laporan.transaksi');
+    Route::get('/laporan/stok', [StockReportController::class, 'index'])->name('laporan.stok');
+    Route::get('/laporan/stok/pdf', [StockReportController::class, 'downloadPdf'])->name('laporan.stok.pdf');
 // Transaksi Masuk & Keluar
 Route::get('/transaksi/masuk', [TransaksiController::class, 'masuk'])->name('transaksi.masuk');
 Route::get('/transaksi/keluar', [TransaksiController::class, 'keluar'])->name('transaksi.keluar');
