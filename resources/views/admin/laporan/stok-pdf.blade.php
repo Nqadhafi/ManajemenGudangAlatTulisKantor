@@ -35,8 +35,10 @@ body {
         }
 
         .logo {
-            width: 100px;
+            width: 5rem;
+            margin-left : 40px;
             height: auto;
+            text-align: center;
         }
 
         .divider {
@@ -61,7 +63,7 @@ body {
             padding: 0px 0px 0px 0px;
             margin : 0px 0px 0px 0px;
             text-align: left; /* Semua teks di tabel rata tengah */
-            border: none;
+            /* border: none; */
         }
 
         th {
@@ -103,9 +105,9 @@ body {
 <body>
     <!-- Header Section -->
     <div class="header">
-        <table class="company-info" style="align-self: center;">
-            <tr>
-                <td rowspan="4"><img src="{{ asset('storage/' . $company->logo) }}" alt="Logo" class="logo"></td>
+        <table class="company-info">
+            <tr colspan="4">
+                <td rowspan="4" colspan="4"><img src="{{ asset('storage/' . $company->logo) }}" alt="Logo" class="logo"></td>
                 <td>Laporan Stok Gudang ATK & Bahan</td>
             </tr>
             <tr>
