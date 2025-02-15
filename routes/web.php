@@ -39,23 +39,13 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->group(function () {
     Route::resource('perusahaan', PerusahaanController::class);
     Route::get('/laporan/stok', [StockReportController::class, 'index'])->name('laporan.stok');
     Route::get('/laporan/stok/pdf', [StockReportController::class, 'downloadPdf'])->name('laporan.stok.pdf');
-// Transaksi Masuk & Keluar
+
 Route::get('/transaksi/masuk', [TransaksiController::class, 'masuk'])->name('transaksi.masuk');
 Route::get('/transaksi/keluar', [TransaksiController::class, 'keluar'])->name('transaksi.keluar');
-
-// Route untuk create dengan jenis transaksi
 Route::get('/transaksi/{jenis_transaksi}/create', [TransaksiController::class, 'create'])->name('transaksi.create');
-
-// Route untuk store transaksi
 Route::post('/transaksi/store', [TransaksiController::class, 'store'])->name('transaksi.store');
-
-// Route untuk edit transaksi dengan jenis transaksi
 Route::get('/transaksi/{jenis_transaksi}/{transaksi}/edit', [TransaksiController::class, 'edit'])->name('transaksi.edit');
-
-// Route untuk update transaksi
 Route::put('/transaksi/{transaksi}', [TransaksiController::class, 'update'])->name('transaksi.update');
-
-// Route untuk delete transaksi
 Route::delete('/transaksi/{transaksi}', [TransaksiController::class, 'destroy'])->name('transaksi.destroy');
 });
 
@@ -73,8 +63,8 @@ Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
 
 // Route untuk login user
-Route::get('/', [UserLoginController::class, 'index'])->name('/');  // Halaman login user
-Route::post('/user/login', [UserLoginController::class, 'login'])->name('user.login.submit');  // Proses login user
+Route::get('/', [UserLoginController::class, 'index'])->name('/');
+Route::post('/user/login', [UserLoginController::class, 'login'])->name('user.login.submit');
 
 // Route untuk transaksi user setelah login, menggunakan middleware check.logged.in
 Route::middleware(['check.logged.in'])->group(function () {
