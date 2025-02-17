@@ -21,17 +21,17 @@
             </div>
 
             @if($stok)
-                <p><strong>Stok tersedia:</strong> {{ $stok }}</p>
+                <p><strong>Stok tersedia:</strong> {{ $stok }} {{ $produk->satuan }}</p>
             @endif
 
             <div class="mb-3">
                 <label for="jumlah" class="form-label">Jumlah</label>
-                <input type="number" class="form-control" wire:model="jumlah" min="1">
+                <input type="number" class="form-control" wire:model="jumlah" min="1" required>
             </div>
 
             <div class="mb-3">
                 <label for="keterangan" class="form-label">Keterangan</label>
-                <textarea class="form-control" wire:model="keterangan"></textarea>
+                <textarea class="form-control" wire:model="keterangan" required></textarea>
             </div>
 
             <button class="btn btn-success" wire:click="confirmTransaksi">Ambil Stok</button>
