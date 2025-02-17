@@ -1,86 +1,97 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Karyawan;
-use App\Models\Transaksi;
 use App\Models\Produk;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Log;
 
 class UserTransaksiController extends Controller
 {
-    // Menampilkan halaman transaksi
+    // Menampilkan halaman transaksi utama
     public function index()
     {
-        // Ambil produk yang tersedia untuk transaksi
-        $produk = Produk::all();
-    
-        // Ambil data karyawan berdasarkan NIK yang ada di session
+        Log::info("Memuat halaman pengambilan stok");
+
+        // Pastikan user sudah login
+        if (!session()->has('nik')) {
+            return redirect()->route('pengambilan.index')->with('error', 'Anda harus login terlebih dahulu!');
+        }
+
+        // Ambil data karyawan berdasarkan NIK sesi
         $karyawan = Karyawan::where('nik', session('nik'))->first();
-    
-        // Kirim data produk dan karyawan ke view
-        return view('pengambilan.index', compact('produk', 'karyawan'));
+
+        // Ambil daftar produk yang tersedia untuk transaksi
+        $produkList = Produk::all();
+
+        return view('pengambilan.index', compact('karyawan', 'produkList'));
     }
 
-public function history()
-{
-    // Ambil data transaksi berdasarkan nik_karyawan yang login
-    $transaksi = Transaksi::where('nik_karyawan', session('nik'))
-        ->orderBy('tanggal_transaksi', 'desc') // Urutkan berdasarkan tanggal terbaru
-        ->get();
+    // Menampilkan riwayat transaksi user
+    public function history()
+    {
+        Log::info("Memuat riwayat transaksi untuk NIK: " . session('nik'));
 
-    return view('pengambilan.history', compact('transaksi'));
-}
+        // Ambil data transaksi berdasarkan user yang login
+        $transaksi = Transaksi::where('nik_karyawan', session('nik'))
+            ->orderBy('tanggal_transaksi', 'desc')
+            ->get();
 
+        return view('pengambilan.history', compact('transaksi'));
+    }
+
+    // Menangani penyimpanan transaksi baru
     public function store(Request $request)
     {
-        $request->validate([
-            'produk_id' => 'required|array',
-            'jumlah' => 'required|array',
-            'jumlah.*' => 'numeric|min:1',
-            'keterangan' => 'required|array',
-            'keterangan.*' => 'string|max:255',
-        ]);
-    
-        $transaksiDetail = [];
-    
-        foreach ($request->produk_id as $index => $produkId) {
-            $produk = Produk::find($produkId);
-    
-            // Periksa jika stok produk mencukupi
-            if ($produk->stok < $request->jumlah[$index]) {
-                return redirect()->back()->with('error', 'Stok produk tidak mencukupi!');
-            }
-    
-            // Tambahkan detail transaksi untuk ditampilkan di modal konfirmasi
-            $transaksiDetail[] = [
-                'nama' => $produk->nama_produk,
-                'jumlah' => $request->jumlah[$index],
-                'keterangan' => $request->keterangan[$index],
-            ];
-    
-            // Jika stok cukup, buat transaksi
-            Transaksi::create([
-                'jenis_transaksi' => 'keluar',
-                'produk_id' => $produkId,
-                'jumlah' => $request->jumlah[$index],
-                'tanggal_transaksi' => now(),
-                'nik_karyawan' => session('nik'),
-                'keterangan' => $request->keterangan[$index],
-            ]);
-    
-            // Kurangi stok produk
-            $produk->stok -= $request->jumlah[$index];
-            $produk->save();
-        }
-    
-        // Kirim detail transaksi ke view untuk ditampilkan di modal
-        return redirect()->route('pengambilan.index')->with([
-            'success' => 'Transaksi berhasil!',
-            'transaksiDetail' => $transaksiDetail, // Kirim detail transaksi
-        ]);
-    }
-    
-    
-}
+        Log::info("Menerima request transaksi", $request->all());
 
+        // Pastikan user login sebelum transaksi
+        if (!session()->has('nik')) {
+            return redirect()->route('pengambilan.index')->with('error', 'Anda harus login untuk melakukan transaksi.');
+        }
+
+        // Validasi input
+        $request->validate([
+            'produk_id' => 'required|integer|exists:produk,id',
+            'jumlah' => 'required|integer|min:1',
+            'keterangan' => 'required|string|max:255',
+        ]);
+
+        // Ambil produk
+        $produk = Produk::find($request->produk_id);
+
+        // Cek apakah stok cukup
+        if ($produk->stok < $request->jumlah) {
+            Log::error("Stok tidak mencukupi untuk produk: " . $produk->nama_produk);
+            return redirect()->back()->with('error', 'Stok tidak mencukupi!');
+        }
+
+        // Buat transaksi
+        Transaksi::create([
+            'jenis_transaksi' => 'keluar',
+            'produk_id' => $request->produk_id,
+            'jumlah' => $request->jumlah,
+            'tanggal_transaksi' => now(),
+            'nik_karyawan' => session('nik'),
+            'keterangan' => $request->keterangan,
+        ]);
+
+        // Kurangi stok produk
+        $produk->stok -= $request->jumlah;
+        $produk->save();
+
+        return redirect()->route('pengambilan.index')->with('success', 'Transaksi berhasil!');
+    }
+
+    // Logout user
+    public function logout()
+    {
+        Log::info("User logout: " . session('nik'));
+
+        session()->forget('nik');
+        return redirect()->route('pengambilan.index')->with('success', 'Anda telah logout.');
+    }
+}
