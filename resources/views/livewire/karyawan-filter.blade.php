@@ -64,8 +64,9 @@
     <!-- Pagination -->
     <div class="d-flex mt-1 justify-content-start">
         <button wire:click="previousPage" class="btn btn-secondary" @if($karyawan->onFirstPage()) disabled @endif>← Prev</button>
-        <span class="mx-2">Halaman {{ $karyawan->currentPage() }} dari {{ $karyawan->lastPage() }}</span>
         <button wire:click="nextPage" class="btn btn-secondary" @if(!$karyawan->hasMorePages()) disabled @endif>Next →</button>
+        <br>
+        <span class="mx-2"><i>Halaman {{ $karyawan->currentPage() }} dari {{ $karyawan->lastPage() }}</i></span>
     </div>
     
 </div>
