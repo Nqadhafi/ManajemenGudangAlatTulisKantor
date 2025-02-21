@@ -14,7 +14,9 @@ class AddNik extends Migration
     public function up()
     {
         Schema::table('transaksi', function (Blueprint $table) {
-            $table->foreignId('nik_karyawan')->constrained('karyawan', 'nik')->after('produk_id');
+            if (!Schema::hasColumn('transaksi', 'nik_karyawan')) {
+                $table->foreignId('nik_karyawan')->constrained('karyawan', 'nik')->after('produk_id');
+            }
         });
     }
 
