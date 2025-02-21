@@ -6,7 +6,6 @@
         <div class="col-md-6 offset-md-3">
             <div class="card">
                 <div class="card-header">
-                    
                     <h3 class="card-title">Edit Master Produk</h3>
                 </div>
                 @if ($errors->any())
@@ -17,7 +16,7 @@
                         @endforeach
                     </ul>
                 </div>
-            @endif
+                @endif
                 <div class="card-body">
                     <form action="{{ route('produk.update', $produk->id) }}" method="POST">
                         @csrf
@@ -34,15 +33,18 @@
                                 @endforeach
                             </select>
                         </div>
-                       
-                        {{-- <div class="form-group">
-                            <label for="stok">Stok</label>
-                            <input type="number" class="form-control" id="stok" name="stok" value="{{ $produk->stok }}" required>
-                        </div> --}}
                         <div class="form-group">
                             <label for="satuan">Satuan</label>
                             <input type="text" class="form-control" id="satuan" name="satuan" value="{{ $produk->satuan }}" required>
                         </div>
+
+                        <!-- Tambahkan field untuk stok minimum -->
+                        <div class="form-group">
+                            <label for="stok_minimum">Stok Minimum</label>
+                            <input type="number" class="form-control" id="stok_minimum" name="stok_minimum" value="{{ $produk->stok_minimum }}" required min="0">
+                            <small class="form-text text-muted">Masukkan jumlah stok minimum yang diinginkan.</small>
+                        </div>
+
                         <button type="submit" class="btn btn-warning">Update</button>
                     </form>
                 </div>

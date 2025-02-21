@@ -27,6 +27,7 @@ class ProdukController extends Controller
             'nama_produk' => 'required|unique:produk,nama_produk',
             'kategori_id' => 'required',
             'satuan' => 'required',
+            'stok_minimum' => 'required|numeric|min:0',
         ],[
             'nama_produk.unique' => 'Nama produk sudah ada. Mohon pilih nama lain.'  // Pesan kustom
         ]);
@@ -36,6 +37,7 @@ class ProdukController extends Controller
             'kategori_id' => $request->kategori_id,
             'satuan' => $request->satuan,
             'stok' => 0,
+            'stok_minimum' => $request->stok_minimum,
         ]);
         return redirect()->route('produk.index')->with('success', 'Produk berhasil ditambahkan.');
     }
@@ -50,9 +52,10 @@ class ProdukController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nama_produk' => 'required|unique:produk,nama_produk',
+            'nama_produk' => 'required',
             'kategori_id' => 'required',
             'satuan' => 'required',
+            'stok_minimum' => 'required|numeric|min:0',
         ], [
             'nama_produk.unique' => 'Masukan nama produk yang berbeda'  // Pesan kustom
         ]);

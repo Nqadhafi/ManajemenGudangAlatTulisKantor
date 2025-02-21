@@ -26,6 +26,7 @@
                                 <th>#</th>
                                 <th>Nama Produk</th>
                                 <th>Kategori</th>
+                                <th>Level Stok</th>
                                 <th>Satuan</th>
                                 <th>Aksi</th>
                             </tr>
@@ -36,6 +37,7 @@
                                     <td>{{ $loop->iteration + ($produk->currentPage() - 1) * $produk->perPage() }}</td>
                                     <td>{{ $item->nama_produk }}</td>
                                     <td>{{ $item->kategori->nama_kategori }}</td>
+                                    <td>{{ $item->stok_minimum }}</td>
                                     <td>{{ $item->satuan }}</td>
                                     <td>
                                         <a href="{{ route('produk.edit', $item->id) }}" class="btn btn-warning btn-sm">Edit</a>
