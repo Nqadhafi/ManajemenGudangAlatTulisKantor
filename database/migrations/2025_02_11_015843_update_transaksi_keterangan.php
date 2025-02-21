@@ -14,7 +14,7 @@ class UpdateTransaksiKeterangan extends Migration
     public function up()
 {
     Schema::table('transaksi', function (Blueprint $table) {
-        if (!Schema::hasColumn('transaksi', 'nik_karyawan')) {
+        if (!Schema::hasColumn('transaksi', 'keterangan')) {
         $table->text('keterangan')->nullable();
         }
 
