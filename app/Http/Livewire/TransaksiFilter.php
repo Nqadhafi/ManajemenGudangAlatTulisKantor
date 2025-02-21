@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Livewire;
 
 use Livewire\Component;
@@ -12,20 +13,21 @@ class TransaksiFilter extends Component
     use WithPagination;
 
     public $produkId;
-    public $tanggal;
+    public $tanggal_awal;
+    public $tanggal_akhir;
     public $search;
     public $jenis_transaksi;
 
-    // Memastikan filter disimpan dalam URL query string
-    protected $queryString = ['produkId', 'tanggal', 'search', 'jenis_transaksi'];
+    // Simpan filter dalam URL query string
+    protected $queryString = ['produkId', 'tanggal_awal', 'tanggal_akhir', 'search', 'jenis_transaksi'];
 
     // Fungsi untuk mereset semua filter
     public function resetFilters()
     {
         $this->produkId = null;
-        $this->tanggal = null;
+        $this->tanggal_awal = null;
+        $this->tanggal_akhir = null;
         $this->search = '';
-        // $this->jenis_transaksi = null; // Reset filter jenis transaksi
     }
 
     // Fungsi yang dijalankan ketika komponen pertama kali dimuat
@@ -38,7 +40,7 @@ class TransaksiFilter extends Component
             $this->jenis_transaksi = 'keluar';
         }
     }
-    
+
     // Fungsi untuk mendapatkan transaksi berdasarkan filter
     public function render()
     {
@@ -47,22 +49,21 @@ class TransaksiFilter extends Component
             ->when($this->jenis_transaksi, function ($query) {
                 return $query->where('jenis_transaksi', $this->jenis_transaksi);
             })
-            // Filter berdasarkan pencarian produk
+            // Filter berdasarkan pencarian produk atau keterangan
             ->when($this->search, function ($query) {
                 return $query->whereHas('produk', function ($query) {
                     $query->where('nama_produk', 'like', '%' . $this->search . '%');
                 })
                 ->orWhere('keterangan', 'like', '%' . $this->search . '%');
             })
-            // Filter berdasarkan tanggal
-            ->when($this->tanggal, function ($query) {
-                return $query->whereDate('tanggal_transaksi', $this->tanggal);
+            // Filter berdasarkan rentang tanggal
+            ->when($this->tanggal_awal && $this->tanggal_akhir, function ($query) {
+                return $query->whereBetween('tanggal_transaksi', [$this->tanggal_awal, $this->tanggal_akhir]);
             })
-            // Urutkan berdasarkan tanggal transaksi (dari yang terbaru)
-            ->orderBy('tanggal_transaksi', 'desc')
+            ->orderBy('tanggal_transaksi', 'desc') // Urutkan berdasarkan tanggal terbaru
             ->paginate(10);
 
-        // Ambil produk untuk dropdown filter
+        // Ambil data produk untuk dropdown filter
         $produk = Produk::all();
 
         return view('livewire.transaksi-filter', compact('transaksi', 'produk'));
