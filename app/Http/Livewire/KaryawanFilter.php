@@ -32,7 +32,8 @@ class KaryawanFilter extends Component
                 return $query->where('divisi_id', $this->divisi_id);
             })
             ->orderBy('nama', 'asc')
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         $divisi = Divisi::all();
 
