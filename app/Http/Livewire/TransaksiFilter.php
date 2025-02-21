@@ -61,7 +61,8 @@ class TransaksiFilter extends Component
                 return $query->whereBetween('tanggal_transaksi', [$this->tanggal_awal, $this->tanggal_akhir]);
             })
             ->orderBy('tanggal_transaksi', 'desc') // Urutkan berdasarkan tanggal terbaru
-            ->paginate(10);
+            ->paginate(10)
+            ->withQueryString();
 
         // Ambil data produk untuk dropdown filter
         $produk = Produk::all();

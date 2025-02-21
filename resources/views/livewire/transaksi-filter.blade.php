@@ -67,8 +67,10 @@
         </table>
     </div>
 
-    <!-- Pagination -->
     <div class="d-flex mt-1 justify-content-start">
-        {{ $transaksi->links('pagination::simple-bootstrap-4') }}
+        <button wire:click="previousPage" class="btn btn-secondary" @if($transaksi->onFirstPage()) disabled @endif>← Prev</button>
+        <button wire:click="nextPage" class="btn btn-secondary" @if(!$transaksi->hasMorePages()) disabled @endif>Next →</button>
+        <br>
     </div>
+    <span class="mx-2"><i>Halaman {{ $transaksi->currentPage() }} dari {{ $transaksi->lastPage() }}</i></span>
 </div>
