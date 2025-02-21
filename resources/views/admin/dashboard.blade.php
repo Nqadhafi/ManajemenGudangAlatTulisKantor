@@ -34,5 +34,52 @@
             </div>
         </div>
     </div>
+
+    <!-- Card Peringatan Stok Menipis -->
+    @if($produkRendahCount > 0)
+    <div class="col-lg-3 col-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3>{{ $produkRendahCount }}</h3>
+
+            <p>Jumlah produk dengan stok rendah</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-pie-graph"></i>
+          </div>
+          {{-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> --}}
+          <button type="button" class="btn small-box-footer" data-toggle="modal" data-target="#produkStokModal">
+            Lihat Produk
+        </button>
+        </div>
+      </div>
+    @endif
 </div>
+
+<!-- Modal untuk menampilkan produk dengan stok rendah -->
+<div class="modal fade" id="produkStokModal" tabindex="-1" role="dialog" aria-labelledby="produkStokModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="produkStokModalLabel">Produk dengan Stok Menipis</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul>
+                    @foreach ($produkRendah as $produk)
+                        <li>{{ $produk->nama_produk }} - Stok: {{ $produk->stok }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <a href="{{ route('transaksi.create', ['jenis_transaksi' => 'masuk']) }}" class="btn btn-success">Tambah Transaksi Masuk</a>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
