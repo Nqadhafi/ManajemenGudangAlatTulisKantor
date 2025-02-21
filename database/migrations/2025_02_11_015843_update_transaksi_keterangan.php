@@ -14,9 +14,10 @@ class UpdateTransaksiKeterangan extends Migration
     public function up()
 {
     Schema::table('transaksi', function (Blueprint $table) {
-
-        // Menambahkan kolom satuan
+        if (!Schema::hasColumn('transaksi', 'nik_karyawan')) {
         $table->text('keterangan')->nullable();
+        }
+
     });
 }
 
