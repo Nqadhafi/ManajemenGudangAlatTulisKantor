@@ -66,7 +66,7 @@
         <button wire:click="previousPage" class="btn btn-secondary" @if($karyawan->onFirstPage()) disabled @endif>← Prev</button>
         <button wire:click="nextPage" class="btn btn-secondary" @if(!$karyawan->hasMorePages()) disabled @endif>Next →</button>
         <br>
-        <span class="mx-2"><i>Halaman {{ $karyawan->currentPage() }} dari {{ $karyawan->lastPage() }}</i></span>
     </div>
+    <span class="mx-2"><i>Halaman {{ $karyawan->currentPage() }} dari {{ $karyawan->lastPage() }}</i></span>
     
 </div>
