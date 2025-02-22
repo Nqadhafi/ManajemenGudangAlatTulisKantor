@@ -1,5 +1,4 @@
 @extends('admin.layouts.app')
-
 @section('content')
 <div class="container-fluid">
     <div class="row">
@@ -42,15 +41,14 @@
         <div class="small-box bg-danger">
           <div class="inner">
             <h3>{{ $produkRendahCount }}</h3>
-
             <p>Jumlah produk dengan stok rendah</p>
           </div>
           <div class="icon">
             <i class="ion ion-pie-graph"></i>
           </div>
-          {{-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> --}}
-          <button type="button" class="btn small-box-footer" data-toggle="modal" data-target="#produkStokModal">
+          <button type="button" class="btn small-box-footer w-100" data-toggle="modal" data-target="#produkStokModal">
             Lihat Produk
+            <i class="fas fa-arrow-circle-right"></i>
         </button>
         </div>
       </div>
