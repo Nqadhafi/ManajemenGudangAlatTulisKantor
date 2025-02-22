@@ -51,16 +51,24 @@ class TransaksiFilter extends Component
             })
             // Filter berdasarkan pencarian produk atau keterangan
             ->when($this->search, function ($query) {
-                return $query->whereHas('produk', function ($query) {
-                    $query->where('nama_produk', 'like', '%' . $this->search . '%');
-                })
-                ->orWhere('keterangan', 'like', '%' . $this->search . '%');
+                return $query->where(function ($q) {
+                    $q->whereHas('produk', function ($subQuery) {
+                        $subQuery->where('nama_produk', 'like', '%' . $this->search . '%');
+                    })
+                    ->orWhere('keterangan', 'like', '%' . $this->search . '%');
+                });
+            })
+            ->when(Route::is('transaksi.masuk'), function ($query) {
+                return $query->where('jenis_transaksi', 'masuk');
+            })
+            ->when(Route::is('transaksi.keluar'), function ($query) {
+                return $query->where('jenis_transaksi', 'keluar');
             })
             // Filter berdasarkan rentang tanggal
             ->when($this->tanggal_awal && $this->tanggal_akhir, function ($query) {
                 return $query->whereBetween('tanggal_transaksi', [$this->tanggal_awal, $this->tanggal_akhir]);
             })
-            ->orderBy('tanggal_transaksi', 'desc') // Urutkan berdasarkan tanggal terbaru
+            ->orderBy('created_at', 'desc') // Urutkan berdasarkan tanggal terbaru
             ->paginate(10)
             ->withQueryString();
 
