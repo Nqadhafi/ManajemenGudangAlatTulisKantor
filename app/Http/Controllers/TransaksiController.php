@@ -26,7 +26,9 @@ class TransaksiController extends Controller
             ->paginate(10);
     
         // Ambil data produk untuk dropdown filter
-        $produk = Produk::all();
+        $produk = Produk::orderBy('nama_produk','asc')
+        ->get()
+        ;
         
         return view('admin.transaksi.index', compact('transaksi', 'produk'));
     }

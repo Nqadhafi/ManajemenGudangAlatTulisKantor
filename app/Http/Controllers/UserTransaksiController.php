@@ -25,7 +25,8 @@ class UserTransaksiController extends Controller
         $karyawan = Karyawan::where('nik', session('nik'))->first();
 
         // Ambil daftar produk yang tersedia untuk transaksi
-        $produkList = Produk::all();
+        $produkList = Produk::orderBy('nama_produk','asc')
+        ->get();
 
         return view('pengambilan.index', compact('karyawan', 'produkList'));
     }
