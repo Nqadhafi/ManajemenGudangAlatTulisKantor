@@ -26,7 +26,7 @@
 
     <!-- Tabel Karyawan -->
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>#</th>

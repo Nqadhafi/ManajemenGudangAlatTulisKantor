@@ -27,7 +27,7 @@
 
     <!-- Tabel Transaksi -->
     <div class="table-responsive"> <!-- Tambahkan div ini agar tabel bisa di-scroll di layar kecil -->
-        <table class="table table-bordered">
+        <table class="table table-bordered table-striped">
             <thead>
                 <tr>
                     <th>#</th>
