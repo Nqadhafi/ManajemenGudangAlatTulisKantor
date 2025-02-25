@@ -68,7 +68,7 @@
             <div class="modal-body">
                 <ul>
                     @foreach ($produkRendah as $produk)
-                        <li>{{ $produk->nama_produk }} - Stok: {{ $produk->stok }}</li>
+                        <li>{{ $produk->nama_produk }} - Stok: {{ $produk->stok }} {{ $produk->satuan }}</li>
                     @endforeach
                 </ul>
             </div>
